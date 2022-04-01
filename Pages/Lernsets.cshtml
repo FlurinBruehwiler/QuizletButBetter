@@ -1,0 +1,24 @@
+﻿@page
+@model LernsetsModel
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<h1>Create a Lernset</h1>
+
+<ol>
+    @foreach (var lernset in Model.Lernsets)
+    {
+        <li>
+            <p>Name: @lernset.Name</p>
+            <ol id="Cards">
+                @foreach (var card in lernset.Cards)
+                {
+                    <li id="Card">
+                        <p>Begriff: @card.Begriff</p>
+                        <p>Definition: @card.Definition</p>
+                    </li>
+                }
+            </ol>
+        </li>
+    }
+</ol>

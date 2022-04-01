@@ -11,9 +11,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace M133.Migrations
 {
-    [DbContext(typeof(Db))]
-    [Migration("20220329084431_Initial3")]
-    partial class Initial3
+    [DbContext(typeof(QuizletContext))]
+    [Migration("20220329132449_Initial2")]
+    partial class Initial2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -4,16 +4,18 @@ using M133.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
 namespace M133.Migrations
 {
-    [DbContext(typeof(Db))]
-    partial class DbModelSnapshot : ModelSnapshot
+    [DbContext(typeof(QuizletContext))]
+    [Migration("20220329133205_Initial3")]
+    partial class Initial3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,7 +58,7 @@ namespace M133.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ErstellerId")
+                    b.Property<int?>("ErstellerId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -106,9 +108,7 @@ namespace M133.Migrations
                 {
                     b.HasOne("M133.Models.User", "Ersteller")
                         .WithMany()
-                        .HasForeignKey("ErstellerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ErstellerId");
 
                     b.Navigation("Ersteller");
                 });

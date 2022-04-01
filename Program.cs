@@ -1,7 +1,25 @@
+using M133.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+builder.Services.AddDbContext<QuizletContext>(options =>
+{
+    options.UseSqlServer(@"Server=FLURIN-PC;Database=Quizlet;User Id=tester;Password=123;");
+    options.EnableSensitiveDataLogging();
+});
 
 var app = builder.Build();
 
@@ -19,6 +37,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapRazorPages();
 
