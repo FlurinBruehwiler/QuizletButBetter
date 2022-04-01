@@ -7,7 +7,6 @@ public class IndexModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
 
-    public string Message { get; set; } = "De Henrik isch en uuu kuhle";
     
     public IndexModel(ILogger<IndexModel> logger)
     {
@@ -16,6 +15,5 @@ public class IndexModel : PageModel
 
     public void OnGet()
     {
-        Message += $" nomal";
     }
 }

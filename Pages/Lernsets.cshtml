@@ -3,22 +3,13 @@
 @{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>Create a Lernset</h1>
+<h1>Your Lernsets</h1>
 
-<ol>
+<button type="button" class="btn btn-primary newLernsetButton">new Lernset</button>
+
+<div class="list-group mt-5">
     @foreach (var lernset in Model.Lernsets)
     {
-        <li>
-            <p>Name: @lernset.Name</p>
-            <ol id="Cards">
-                @foreach (var card in lernset.Cards)
-                {
-                    <li id="Card">
-                        <p>Begriff: @card.Begriff</p>
-                        <p>Definition: @card.Definition</p>
-                    </li>
-                }
-            </ol>
-        </li>
+        <a href="/Lernset/@lernset.Id" class="list-group-item list-group-item-action">@lernset.Name</a>
     }
-</ol>
+</div>

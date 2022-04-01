@@ -30,14 +30,36 @@ public class CreateLernsetModel : PageModel
     
     public async Task<IActionResult> OnPostAsync()
     {
-        Console.WriteLine(Lernset.Name);
-        Console.WriteLine(ModelState.Count);
-        
         if (!ModelState.IsValid)
         {
+            Console.WriteLine("Error");
+
             return Page();
         }
-        
+
+        if (Lernset.Cards == null)
+        {
+            Console.WriteLine("No Cards");
+            return Page();
+        }
+
+        foreach (var card in Lernset.Cards)
+        {
+            if (string.IsNullOrWhiteSpace(card.Definition) || string.IsNullOrWhiteSpace(card.Begriff))
+            {
+                Lernset.Cards.Remove(card);
+            }
+        }
+
+        if (Lernset.Cards.Count == 0)
+        {
+            Console.WriteLine("No Cards");
+            return Page();
+        }
+
+        Console.WriteLine($"Creating Lernset with name {Lernset.Name} and the following cards");
+        Lernset.Cards?.ForEach(x => Console.WriteLine($"Definition: {x.Definition}, Begriff: {x.Begriff}"));
+
         _quizletContext.Lernsets.Add(Lernset);
         await _quizletContext.SaveChangesAsync();
         

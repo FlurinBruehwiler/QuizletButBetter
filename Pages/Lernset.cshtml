@@ -1,0 +1,32 @@
+﻿@page "{id:int}"
+@model LernsetModel
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<h1>@Model.Lernset.Name</h1>
+
+<button type="button" class="btn btn-primary learnButton">Learn</button>
+<button type="button" class="btn btn-primary editButton">Edit</button>
+<button type="button" class="btn btn-primary shareButton">Share</button>
+
+<table class="table mt-5">
+    <thead>
+    <tr>
+        <th scope="col">Begriff</th>
+        <th scope="col">Definition</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var card in Model.Lernset.Cards)
+    {
+        <tr>
+            <td>@card.Begriff</td>
+            <td>@card.Definition</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+
+</script>

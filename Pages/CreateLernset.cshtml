@@ -11,16 +11,19 @@
     <div asp-validation-summary="ModelOnly"></div>
     <span asp-validation-for="Lernset.Name" class="text-danger"></span>
     <ul id="Cards" class="p-0">
-        <li id="Card" class="card mt-2">
+        <li class="card mt-2">
             <div class="card-body">
-                Begriff: <button class="btn btn-outline-danger"></button>
-                <input type="text" asp-for="Lernset.Cards![0].Begriff" class="form-control mt-1 mb-2">
-                Definition:
-                <input type="text" asp-for="Lernset.Cards![0].Definition" class="form-control mt-1">
+                <div class="d-flex justify-content-between align-items-end">
+                    <p class="mb-0">Begriff: </p>
+                    <button class="btn btn-danger fs-6 deleteCard" disabled><i class="bi bi-file-earmark-x"></i></button>
+                </div>
+                <input type="text" asp-for="Lernset.Cards![0].Begriff" class="form-control mt-1 mb-2" id="Begriff">
+                <p>Definition:</p>
+                <input type="text" asp-for="Lernset.Cards![0].Definition" class="form-control mt-1" id="Definition">
             </div>
         </li>
     </ul>
-    <button type="button" id="AddCard" class="btn btn-primary">Add Cards</button>
+    <button type="button" id="AddCard" class="btn btn-primary">Add Card</button>
     <br>
     <input type="submit" class="btn btn-primary mt-2" value="Lernset erstellen"/>
 </form>
@@ -29,22 +32,26 @@
     let counter = 0;
     $(document).ready(function () {
         $("#AddCard").click(function () {
+            let card = $(".card").first();
+            card.find(".deleteCard").prop("disabled", false);
             counter++;
-            let newCard = $("#Card").clone();
-            let begriff = newCard.children().first().children().first();
-            let definition = newCard.children().first().children().first();
-            let replaceIndex = (i, c) => c.replace("0", counter);
-            
-            begriff.attr("id", replaceIndex);
-            begriff.attr("name", replaceIndex);
-            begriff.val("");
-            definition.attr("id", replaceIndex);
-            definition.attr("name", replaceIndex);
-            definition.val("");
-            
+            let newCard = card.clone();
+            let adjust = (c) => {
+                let replaceIndex = (i, c) => c.replace("0", counter);
+                c.attr("id", replaceIndex);
+                c.attr("name", replaceIndex);
+                c.val("");
+            }
+            adjust(newCard.find('#Begriff'));
+            adjust(newCard.find('#Definition'));
             $("#Cards").append(newCard);
         });
+        $(document).on("click", ".deleteCard", function (){
+           $(this).parents(".card").remove();
+           let cards = $(".card");
+           if(cards.length === 1){
+               cards.first().find(".deleteCard").prop("disabled", true);
+           }
+        });
     });
-  
-  
 </script>
