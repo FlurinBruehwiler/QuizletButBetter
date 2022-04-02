@@ -12,19 +12,29 @@ namespace M133.Pages;
 public class LearnModel : PageModel
 {
     private readonly ILogger<ErrorModel> _logger;
-    private readonly QuizletContext _quizletContext;
+
+    public const string SessionKeyName = "_Name";
+    public const string SessionKeyAge = "_Age";
 
     [BindProperty]
     public Lernset Lernset { get; set; }
     
-    public LearnModel(ILogger<ErrorModel> logger, QuizletContext quizletContext)
+    public LearnModel(ILogger<ErrorModel> logger)
     {
         _logger = logger;
-        _quizletContext = quizletContext;
     }
 
     public void OnGet(int id)
     {
-        Lernset = _quizletContext.Lernsets.Include(x => x.Cards).First(x => x.Id == id);
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString(SessionKeyName)))
+        {
+            HttpContext.Session.SetString(SessionKeyName, "The Doctor");
+            HttpContext.Session.SetInt32(SessionKeyAge, 73);
+        }
+        var name = HttpContext.Session.GetString(SessionKeyName);
+        var age = HttpContext.Session.GetInt32(SessionKeyAge).ToString();
+
+        _logger.LogInformation("Session Name: {Name}", name);
+        _logger.LogInformation("Session Age: {Age}", age);
     }
 }
