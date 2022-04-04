@@ -1,10 +1,18 @@
 using M133.Models;
+using M133.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using static System.Text.Encoding;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizePage("/CreateLernset");
+});
 
 builder.Services.AddDistributedMemoryCache();
 
@@ -17,9 +25,31 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddDbContext<QuizletContext>(options =>
 {
-    options.UseSqlServer(@"Server=FLURIN-PC;Database=Quizlet;User Id=tester;Password=123;");
+    options.UseSqlServer(builder.Configuration.GetSection("ConnectionString").Value);
     options.EnableSensitiveDataLogging();
 });
+
+builder.Services.AddScoped<AuthService>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(UTF8.GetBytes(builder.Configuration.GetSection("JwtSettings:Secret").Value)),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                context.Token = context.Request.Cookies["X-Access-Token"];
+                return Task.CompletedTask;
+            }
+        };
+    });
 
 var app = builder.Build();
 
@@ -35,6 +65,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

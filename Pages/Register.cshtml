@@ -1,0 +1,22 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<div class="d-flex justify-content-center">
+    <div class="card mt-5" style="width: 18rem;">
+        <div class="card-body">
+            <form method="post">
+                <h5 class="card-title">Register</h5>
+                <p class="card-text mt-1 mb-0">Username</p>
+                <input type="text" asp-for="Register.Username" class="form-control" id="Username">
+                <p class="card-text mt-1 mb-0">Password</p>
+                <input type="text" asp-for="Register.Password" class="form-control" id="Password">
+                <p class="card-text mt-1 mb-0">Repeat Password</p>
+                <input type="text" asp-for="Register.PasswordCheck" class="form-control" id="PasswordCheck">
+                <input type="submit" class="btn btn-primary mt-2" value="Register"/>
+            </form>
+        </div>
+    </div>
+</div>
+

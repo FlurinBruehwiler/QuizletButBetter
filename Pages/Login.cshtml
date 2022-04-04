@@ -1,0 +1,20 @@
+﻿@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<div class="d-flex justify-content-center">
+    <div class="card mt-5" style="width: 18rem;">
+        <div class="card-body">
+            <form method="post">
+                <h5 class="card-title">Login</h5>
+                <p class="card-text mt-1 mb-0">Username</p>
+                <input type="text" asp-for="Login.Username" class="form-control" id="Username">
+                <p class="card-text mt-1 mb-0">Password</p>
+                <input type="text" asp-for="Login.Password" class="form-control" id="Password">
+                <input type="submit" class="btn btn-primary mt-2" value="Login"/>
+            </form>
+        </div>
+    </div>
+</div>
+
