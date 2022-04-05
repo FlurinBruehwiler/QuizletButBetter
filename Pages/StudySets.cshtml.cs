@@ -13,7 +13,7 @@ public class StudySetsModel : PageModel
 {
     private readonly QuizletContext _quizletContext;
 
-    public List<StudySet> Lernsets { get; set; } = null!;
+    public List<StudySet> StudySets { get; set; } = null!;
 
     public StudySetsModel(QuizletContext quizletContext)
     {
@@ -22,6 +22,6 @@ public class StudySetsModel : PageModel
 
     public void OnGet()
     {
-        Lernsets = _quizletContext.StudySets.ToList();
+        StudySets = _quizletContext.StudySets.ToList();
     }
 }

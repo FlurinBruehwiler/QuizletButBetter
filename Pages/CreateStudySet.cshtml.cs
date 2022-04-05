@@ -55,10 +55,7 @@ public class CreateStudySetModel : PageModel
         {
             Console.WriteLine("No Cards");
             return Page();
-        }   
-
-        Console.WriteLine($"Creating Lernset with name {StudySet.Name} and the following cards");
-        //Lernset.Cards?.ForEach(x => Console.WriteLine($"Definition: {x.Definition}, Begriff: {x.Begriff}"));
+        }
 
         _quizletContext.StudySets.Add(StudySet);
         await _quizletContext.SaveChangesAsync();

@@ -3,13 +3,13 @@
 @{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>Your Lernsets</h1>
+<h1>Your Study Sets</h1>
 
-<button type="button" class="btn btn-primary newLernsetButton">new Lernset</button>
+<button type="button" class="btn btn-primary newStudySetButton">new Study Set</button>
 
 <div class="list-group mt-5">
-    @foreach (var lernset in Model.Lernsets)
+    @foreach (var studySet in Model.StudySets)
     {
-        <a href="/Lernset/@lernset.StudySetId" class="list-group-item list-group-item-action">@lernset.Name</a>
+        <a href="/StudySet/@studySet.StudySetId" class="list-group-item list-group-item-action">@studySet.Name</a>
     }
 </div>

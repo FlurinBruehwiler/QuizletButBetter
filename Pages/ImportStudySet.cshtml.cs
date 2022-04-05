@@ -8,20 +8,18 @@ namespace M133.Pages;
 
 [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 [IgnoreAntiforgeryToken]
-public class ImportLernsetModel : PageModel
+public class ImportStudySetModel : PageModel
 {
-    private readonly ILogger<ErrorModel> _logger;
     private readonly QuizletContext _quizletContext;
 
     [BindProperty]
-    public string Title { get; set; }
-    
+    public string Title { get; set; } = null!;
+
     [BindProperty]
-    public string TextArea { get; set; }
-    
-    public ImportLernsetModel(ILogger<ErrorModel> logger, QuizletContext quizletContext)
+    public string TextArea { get; set; } = null!;
+
+    public ImportStudySetModel(QuizletContext quizletContext)
     {
-        _logger = logger;
         _quizletContext = quizletContext;
     }
 
@@ -30,7 +28,7 @@ public class ImportLernsetModel : PageModel
         return Page();
     }
     
-    public async Task<IActionResult> OnPostAsync()
+    public IActionResult OnPostAsync()
     {
         return RedirectToPage("./Index");
     }
