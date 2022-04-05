@@ -57,8 +57,8 @@ public class CreateLernsetModel : PageModel
             return Page();
         }
 
-        Console.WriteLine($"Creating Lernset with name {Lernset.Name} and the following cards");
-        Lernset.Cards?.ForEach(x => Console.WriteLine($"Definition: {x.Definition}, Begriff: {x.Begriff}"));
+        Console.WriteLine($"Creating Learnset with name {Lernset.Name} and the following cards");
+        Lernset.Cards?.ForEach(x => Console.WriteLine($"Definition: {x.Definition}, Term: {x.Begriff}"));
 
         _quizletContext.Lernsets.Add(Lernset);
         await _quizletContext.SaveChangesAsync();
