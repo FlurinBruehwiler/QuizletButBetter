@@ -17,8 +17,8 @@ public class LoginModel : PageModel
     private readonly AuthService _authService;
 
     [BindProperty]
-    public Login Login { get; set; }
-    
+    public Login Login { get; set; } = null!;
+
     public LoginModel(ILogger<ErrorModel> logger, QuizletContext quizletContext, AuthService authService)
     {
         _logger = logger;
@@ -26,7 +26,7 @@ public class LoginModel : PageModel
         _authService = authService;
     }
 
-    public async Task<IActionResult> OnPostAsync()
+    public IActionResult OnPostAsync()
     {
         if (!ModelState.IsValid)
         {

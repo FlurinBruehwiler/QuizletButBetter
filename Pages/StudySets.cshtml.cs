@@ -9,21 +9,19 @@ namespace M133.Pages;
 
 [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 [IgnoreAntiforgeryToken]
-public class LernsetsModel : PageModel
+public class StudySetsModel : PageModel
 {
-    private readonly ILogger<ErrorModel> _logger;
     private readonly QuizletContext _quizletContext;
 
-    public List<Lernset> Lernsets { get; set; }
-    
-    public LernsetsModel(ILogger<ErrorModel> logger, QuizletContext quizletContext)
+    public List<StudySet> Lernsets { get; set; } = null!;
+
+    public StudySetsModel(QuizletContext quizletContext)
     {
-        _logger = logger;
         _quizletContext = quizletContext;
     }
 
     public void OnGet()
     {
-        Lernsets = _quizletContext.Lernsets.ToList();
+        Lernsets = _quizletContext.StudySets.ToList();
     }
 }

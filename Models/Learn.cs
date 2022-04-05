@@ -4,7 +4,25 @@ namespace M133.Models;
 
 public class Learn
 {
-    [Key]
-    public int Id { get; set; }
-    public Lernset Lernset { get; set; }
+    public Learn(User user, StudySet studySet)
+    {
+        User = user;
+        StudySet = studySet;
+    }
+
+    public Learn()
+    {
+        
+    }
+
+    public int LearnId { get; set; }
+    
+    public User User { get; set; } = null!;
+    public int UserId { get; set; }
+    
+    public StudySet StudySet { get; set; } = null!;
+    public int StudySetId { get; set; }
+    
+   
+    public List<LearnCard>? LearnCards { get; set; }
 }

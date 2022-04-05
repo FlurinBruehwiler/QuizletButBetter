@@ -1,5 +1,5 @@
 ﻿@page
-@model CreateLernsetModel
+@model CreateStudySetModel
 @{
     ViewData["Title"] = "Privacy Policy";
 }
@@ -7,9 +7,9 @@
 
 <form method="post">
     Name:
-    <input asp-for="Lernset.Name" class="form-control mt-1"/>
+    <input asp-for="StudySet.Name" class="form-control mt-1"/>
     <div asp-validation-summary="ModelOnly"></div>
-    <span asp-validation-for="Lernset.Name" class="text-danger"></span>
+    <span asp-validation-for="StudySet.Name" class="text-danger"></span>
     <ul id="Cards" class="p-0">
         <li class="card mt-2">
             <div class="card-body">
@@ -17,9 +17,9 @@
                     <p class="mb-0">Begriff: </p>
                     <button class="btn btn-danger fs-6 deleteCard" disabled><i class="bi bi-file-earmark-x"></i></button>
                 </div>
-                <input type="text" asp-for="Lernset.Cards![0].Begriff" class="form-control mt-1 mb-2" id="Begriff">
+                <input type="text" class="form-control mt-1 mb-2" id="Begriff">
                 <p>Definition:</p>
-                <input type="text" asp-for="Lernset.Cards![0].Definition" class="form-control mt-1" id="Definition">
+                <input type="text" class="form-control mt-1" id="Definition">
             </div>
         </li>
     </ul>

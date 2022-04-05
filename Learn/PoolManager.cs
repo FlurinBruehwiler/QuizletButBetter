@@ -1,16 +1,14 @@
 ﻿using M133.Models;
 
-namespace M133.Services.Learn;
+namespace M133.Learn;
 
 public class PoolManager
 {
-    private readonly Lernset _lernset;
+    private readonly StudySet _studySet;
     private LinkedList<Card> _activeCards = new();
 
-    public PoolManager(Lernset lernset)
+    public PoolManager(Models.Learn learn)
     {
-        _lernset = lernset;
+        _studySet = learn.StudySet;
     }
-
-
 }

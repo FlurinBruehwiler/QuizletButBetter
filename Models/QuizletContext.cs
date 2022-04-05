@@ -14,18 +14,18 @@ public class QuizletContext : DbContext
     {
     }
     
-    public DbSet<User> Users { get; set; }
-    public DbSet<Lernset> Lernsets { get; set; }
-    public DbSet<Card> Cards { get; set; }
-    public DbSet<Pool> Pools { get; set; }
-    public DbSet<LearnCard> LearnCards { get; set; }
-    public DbSet<Learn> Learns { get; set; }
-    
+    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<StudySet> StudySets { get; set; } = null!;
+    public DbSet<Card> Cards { get; set; } = null!;
+    public DbSet<Pool> Pools { get; set; } = null!;
+    public DbSet<LearnCard> LearnCards { get; set; } = null!;
+    public DbSet<Learn> Learns { get; set; } = null!;
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer(@"Server=FLURIN-PC;Database=Quizlet;User Id=tester;Password=123;");
+            optionsBuilder.UseSqlServer(@"Server=DESKTOP-VPK5DHD;Database=Quizlet;User Id=tester;Password=123;");
         }
     }
 }

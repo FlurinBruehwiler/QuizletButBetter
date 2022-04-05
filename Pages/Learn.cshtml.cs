@@ -17,8 +17,8 @@ public class LearnModel : PageModel
     public const string SessionKeyAge = "_Age";
 
     [BindProperty]
-    public Lernset Lernset { get; set; }
-    
+    public StudySet StudySet { get; set; } = null!;
+
     public LearnModel(ILogger<ErrorModel> logger)
     {
         _logger = logger;

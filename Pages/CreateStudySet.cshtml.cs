@@ -8,19 +8,19 @@ namespace M133.Pages;
 
 [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 [IgnoreAntiforgeryToken]
-public class CreateLernsetModel : PageModel
+public class CreateStudySetModel : PageModel
 {
     private readonly ILogger<ErrorModel> _logger;
     private readonly QuizletContext _quizletContext;
 
     [BindProperty]
-    public Lernset Lernset { get; set; }
+    public StudySet StudySet { get; set; }
     
-    public CreateLernsetModel(ILogger<ErrorModel> logger, QuizletContext quizletContext)
+    public CreateStudySetModel(ILogger<ErrorModel> logger, QuizletContext quizletContext)
     {
         _logger = logger;
         _quizletContext = quizletContext;
-        Lernset = new Lernset();
+        StudySet = new StudySet();
     }
 
     public IActionResult OnGet()
@@ -37,30 +37,30 @@ public class CreateLernsetModel : PageModel
             return Page();
         }
 
-        if (Lernset.Cards == null)
+        if (StudySet.Cards == null)
         {
             Console.WriteLine("No Cards");
             return Page();
         }
 
-        foreach (var card in Lernset.Cards)
+        foreach (var card in StudySet.Cards)
         {
-            if (string.IsNullOrWhiteSpace(card.Definition) || string.IsNullOrWhiteSpace(card.Begriff))
+            if (string.IsNullOrWhiteSpace(card.Definition) || string.IsNullOrWhiteSpace(card.Term))
             {
-                Lernset.Cards.Remove(card);
+                StudySet.Cards.Remove(card);
             }
         }
 
-        if (Lernset.Cards.Count == 0)
+        if (StudySet.Cards.Count == 0)
         {
             Console.WriteLine("No Cards");
             return Page();
-        }
+        }   
 
-        Console.WriteLine($"Creating Lernset with name {Lernset.Name} and the following cards");
-        Lernset.Cards?.ForEach(x => Console.WriteLine($"Definition: {x.Definition}, Begriff: {x.Begriff}"));
+        Console.WriteLine($"Creating Lernset with name {StudySet.Name} and the following cards");
+        //Lernset.Cards?.ForEach(x => Console.WriteLine($"Definition: {x.Definition}, Begriff: {x.Begriff}"));
 
-        _quizletContext.Lernsets.Add(Lernset);
+        _quizletContext.StudySets.Add(StudySet);
         await _quizletContext.SaveChangesAsync();
         
         return RedirectToPage("./Index");

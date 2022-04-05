@@ -4,11 +4,29 @@ namespace M133.Models;
 
 public class LearnCard
 {
-    [Key]
-    public int Id { get; set; }
-    public Learn Learn { get; set; }
-    public Card Card { get; set; }
-    public Pool Pool { get; set; }
-    public User User { get; set; }
+    public LearnCard(Learn learn, Card card, Pool pool)
+    {
+        Learn = learn;
+        Card = card;
+        Pool = pool;
+        RepeatedFalse = 0;
+    }
+
+    public LearnCard()
+    {
+        
+    }
+    
+    public int LearnCardId { get; set; }
+    
+    public Learn Learn { get; set; } = null!;
+    public int LearnId { get; set; }
+    
+    public Card Card { get; set; } = null!;
+    public int CardId { get; set; }
+    
+    public Pool Pool { get; set; } = null!;
+    public int PoolId { get; set; }
+    
     public int RepeatedFalse { get; set; }
 }

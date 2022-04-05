@@ -1,5 +1,5 @@
 ﻿@page
-@model LernsetsModel
+@model StudySetsModel
 @{
     ViewData["Title"] = "Privacy Policy";
 }
@@ -10,6 +10,6 @@
 <div class="list-group mt-5">
     @foreach (var lernset in Model.Lernsets)
     {
-        <a href="/Lernset/@lernset.Id" class="list-group-item list-group-item-action">@lernset.Name</a>
+        <a href="/Lernset/@lernset.StudySetId" class="list-group-item list-group-item-action">@lernset.Name</a>
     }
 </div>

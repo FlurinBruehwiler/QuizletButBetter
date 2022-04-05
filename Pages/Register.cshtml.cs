@@ -17,8 +17,8 @@ public class RegisterModel : PageModel
     private readonly AuthService _authService;
 
     [BindProperty]
-    public Register Register { get; set; }
-    
+    public Register Register { get; set; } = null!;
+
     public RegisterModel(ILogger<ErrorModel> logger, QuizletContext quizletContext, AuthService authService)
     {
         _logger = logger;
@@ -41,12 +41,7 @@ public class RegisterModel : PageModel
         
         _authService.CreatePasswordHash(Register.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
-        _quizletContext.Users.Add(new User
-        {
-            Username = Register.Username,
-            PasswordHash = passwordHash,
-            PasswordSalt = passwordSalt
-        });
+        _quizletContext.Users.Add(new User(Register.Username, passwordHash, passwordSalt));
 
         await _quizletContext.SaveChangesAsync();
 

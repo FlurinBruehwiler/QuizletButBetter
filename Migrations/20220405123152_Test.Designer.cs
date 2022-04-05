@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace M133.Migrations
 {
     [DbContext(typeof(QuizletContext))]
-    [Migration("20220402125102_AddUserToLearnCard")]
-    partial class AddUserToLearnCard
+    [Migration("20220405123152_Test")]
+    partial class Test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,55 +26,60 @@ namespace M133.Migrations
 
             modelBuilder.Entity("M133.Models.Card", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CardId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Begriff")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CardId"), 1L, 1);
 
                     b.Property<string>("Definition")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("LernsetId")
+                    b.Property<int>("StudySetId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<string>("Term")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("LernsetId");
+                    b.HasKey("CardId");
+
+                    b.HasIndex("StudySetId");
 
                     b.ToTable("Cards");
                 });
 
             modelBuilder.Entity("M133.Models.Learn", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("LearnId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LearnId"), 1L, 1);
 
-                    b.Property<int>("LernsetId")
+                    b.Property<int>("StudySetId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("LernsetId");
+                    b.HasKey("LearnId");
 
-                    b.ToTable("Learn");
+                    b.HasIndex("StudySetId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Learns");
                 });
 
             modelBuilder.Entity("M133.Models.LearnCard", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("LearnCardId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LearnCardId"), 1L, 1);
 
                     b.Property<int>("CardId")
                         .HasColumnType("int");
@@ -88,10 +93,7 @@ namespace M133.Migrations
                     b.Property<int>("RepeatedFalse")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("LearnCardId");
 
                     b.HasIndex("CardId");
 
@@ -99,58 +101,56 @@ namespace M133.Migrations
 
                     b.HasIndex("PoolId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("LearnCards");
                 });
 
-            modelBuilder.Entity("M133.Models.Lernset", b =>
+            modelBuilder.Entity("M133.Models.Pool", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("PoolId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PoolId"), 1L, 1);
 
-                    b.Property<int?>("ErstellerId")
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PoolId");
+
+                    b.ToTable("Pools");
+                });
+
+            modelBuilder.Entity("M133.Models.StudySet", b =>
+                {
+                    b.Property<int>("StudySetId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudySetId"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("ErstellerId");
-
-                    b.ToTable("Lernsets");
-                });
-
-            modelBuilder.Entity("M133.Models.Pool", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.HasKey("StudySetId");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasIndex("UserId");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("Pools");
+                    b.ToTable("StudySets");
                 });
 
             modelBuilder.Entity("M133.Models.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
 
                     b.Property<byte[]>("PasswordHash")
                         .IsRequired()
@@ -164,52 +164,58 @@ namespace M133.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
                     b.ToTable("Users");
                 });
 
             modelBuilder.Entity("M133.Models.Card", b =>
                 {
-                    b.HasOne("M133.Models.Lernset", null)
+                    b.HasOne("M133.Models.StudySet", "StudySet")
                         .WithMany("Cards")
-                        .HasForeignKey("LernsetId");
+                        .HasForeignKey("StudySetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("StudySet");
                 });
 
             modelBuilder.Entity("M133.Models.Learn", b =>
                 {
-                    b.HasOne("M133.Models.Lernset", "Lernset")
-                        .WithMany()
-                        .HasForeignKey("LernsetId")
+                    b.HasOne("M133.Models.StudySet", "StudySet")
+                        .WithMany("Learns")
+                        .HasForeignKey("StudySetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Lernset");
+                    b.HasOne("M133.Models.User", "User")
+                        .WithMany("Learns")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("StudySet");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("M133.Models.LearnCard", b =>
                 {
                     b.HasOne("M133.Models.Card", "Card")
-                        .WithMany()
+                        .WithMany("LearnCards")
                         .HasForeignKey("CardId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("M133.Models.Learn", "Learn")
-                        .WithMany()
+                        .WithMany("LearnCards")
                         .HasForeignKey("LearnId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("M133.Models.Pool", "Pool")
-                        .WithMany()
+                        .WithMany("LearnCards")
                         .HasForeignKey("PoolId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("M133.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -218,22 +224,46 @@ namespace M133.Migrations
                     b.Navigation("Learn");
 
                     b.Navigation("Pool");
+                });
+
+            modelBuilder.Entity("M133.Models.StudySet", b =>
+                {
+                    b.HasOne("M133.Models.User", "User")
+                        .WithMany("StudySets")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("M133.Models.Lernset", b =>
+            modelBuilder.Entity("M133.Models.Card", b =>
                 {
-                    b.HasOne("M133.Models.User", "Ersteller")
-                        .WithMany()
-                        .HasForeignKey("ErstellerId");
-
-                    b.Navigation("Ersteller");
+                    b.Navigation("LearnCards");
                 });
 
-            modelBuilder.Entity("M133.Models.Lernset", b =>
+            modelBuilder.Entity("M133.Models.Learn", b =>
+                {
+                    b.Navigation("LearnCards");
+                });
+
+            modelBuilder.Entity("M133.Models.Pool", b =>
+                {
+                    b.Navigation("LearnCards");
+                });
+
+            modelBuilder.Entity("M133.Models.StudySet", b =>
                 {
                     b.Navigation("Cards");
+
+                    b.Navigation("Learns");
+                });
+
+            modelBuilder.Entity("M133.Models.User", b =>
+                {
+                    b.Navigation("Learns");
+
+                    b.Navigation("StudySets");
                 });
 #pragma warning restore 612, 618
         }

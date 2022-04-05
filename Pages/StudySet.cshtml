@@ -1,9 +1,9 @@
 ﻿@page "{id:int}"
-@model LernsetModel
+@model StudySetModel
 @{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>@Model.Lernset.Name</h1>
+<h1>@Model.StudySet.Name</h1>
 
 <button type="button" class="btn btn-primary learnButton">Learn</button>
 <button type="button" class="btn btn-primary editButton">Edit</button>
@@ -17,10 +17,10 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var card in Model.Lernset.Cards)
+    @foreach (var card in Model.StudySet.Cards!)
     {
         <tr>
-            <td>@card.Begriff</td>
+            <td>@card.Term</td>
             <td>@card.Definition</td>
         </tr>
     }
