@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
 using M133.Models;
 using M133.Models.DTO;
+using M133.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -10,17 +12,17 @@ namespace M133.Pages;
 [IgnoreAntiforgeryToken]
 public class CreateStudySetModel : PageModel
 {
-    private readonly ILogger<ErrorModel> _logger;
     private readonly QuizletContext _quizletContext;
+    private readonly UserService _userService;
 
     [BindProperty]
-    public StudySet StudySet { get; set; }
+    public DtoStudySet StudySet { get; set; }
     
-    public CreateStudySetModel(ILogger<ErrorModel> logger, QuizletContext quizletContext)
+    public CreateStudySetModel(QuizletContext quizletContext, UserService userService)
     {
-        _logger = logger;
         _quizletContext = quizletContext;
-        StudySet = new StudySet();
+        _userService = userService;
+        StudySet = new DtoStudySet();
     }
 
     public IActionResult OnGet()
@@ -34,12 +36,6 @@ public class CreateStudySetModel : PageModel
         {
             Console.WriteLine("Error");
 
-            return Page();
-        }
-
-        if (StudySet.Cards == null)
-        {
-            Console.WriteLine("No Cards");
             return Page();
         }
 
@@ -57,9 +53,18 @@ public class CreateStudySetModel : PageModel
             return Page();
         }
 
-        _quizletContext.StudySets.Add(StudySet);
+        _quizletContext.StudySets.Add(new StudySet
+        {
+            Name = StudySet.Name,
+            Cards = StudySet.Cards.Select(x => new Card
+            {
+                Term = x.Term,
+                Definition = x.Definition
+            }).ToList(),
+            User = _userService.GetUser(Request) ?? throw new InvalidOperationException()
+        });
         await _quizletContext.SaveChangesAsync();
-        
+
         return RedirectToPage("./Index");
     }
 }

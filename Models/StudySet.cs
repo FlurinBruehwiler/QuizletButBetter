@@ -23,6 +23,6 @@ public class StudySet
     public int UserId { get; set; }
 
     public List<Learn>? Learns { get; set; }
-    public List<Card>? Cards { get; set; }
+    public List<Card> Cards { get; set; }
 
 }
