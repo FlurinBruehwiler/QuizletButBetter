@@ -6,19 +6,33 @@
 <h1>Import a Learnset</h1>
 
 <form method="post">
-    Name:
-    <input asp-for="Title" class="form-control mt-1"/>
-    <ul id="Cards" class="p-0">
-        <li class="card mt-2">
-            <div class="card-body">
-               <div class="form-group">
-                   <label for="exampleFormControlTextarea1">Import your Learnset here:</label>
-                   <textarea asp-for="TextArea" class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
-                 </div>
-            </div>
-        </li>
-    </ul>  
-    
+    <table class="table mt-2">
+        <thead>
+         Name:
+            <input asp-for="Title" class="form-control mt-1"/>
+        <tr>
+            <th scope="col">Import</th>
+            <th scope="col">Preview</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="w-[50%]">
+                    <div >
+                        <label for="exampleFormControlTextarea1">Import your Study Set here:</label>
+                                            <textarea asp-for="TextArea" class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
+                    </div>
+                    
+                </td>
+                <td>
+                     <label for="exampleFormControlTextarea1">Preview:</label>
+                    <textarea asp-for="TextArea" class="form-control" id="exampleFormControlTextarea2" rows="4"></textarea>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
     <input type="submit" class="btn btn-primary mt-2" value="Create Learnset"/>
+    <input type="submit" class="btn btn-primary mt-2" value="Preview"/>
 </form>
 

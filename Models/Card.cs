@@ -2,11 +2,10 @@ namespace M133.Models;
 
 public class Card
 {
-    public Card(string definition, string term, StudySet studySet)
+    public Card(string definition, string term)
     {
         Definition = definition;
         Term = term;
-        StudySet = studySet;
     }
 
     public Card()

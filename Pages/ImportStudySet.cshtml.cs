@@ -18,6 +18,25 @@ public class ImportStudySetModel : PageModel
     [BindProperty]
     public string TextArea { get; set; } = null!;
 
+    public StudySet? ImportStudySet()
+    { 
+        var sep = "\t";
+        var studySet = new StudySet(Title, _quizletContext.Users.First());
+        var listStrLineElements = TextArea.Split(Environment.NewLine).ToList();
+        foreach(var l in listStrLineElements)
+        {
+            var termandDefinition = l.Split(sep).ToList();
+            if (termandDefinition.Count != 2)
+            {
+                continue;
+            }
+            Card card = new Card(termandDefinition[0], termandDefinition[1]);
+            studySet.Cards.Add(card);
+        }
+       
+        return studySet;
+    }  
+    
     public ImportStudySetModel(QuizletContext quizletContext)
     {
         _quizletContext = quizletContext;
@@ -30,6 +49,13 @@ public class ImportStudySetModel : PageModel
     
     public IActionResult OnPostAsync()
     {
+        var studySet = ImportStudySet();
+        if (studySet == null)
+            return Page();
+        _quizletContext.StudySets.Add(studySet);
+        _quizletContext.SaveChanges();
         return RedirectToPage("./Index");
     }
+
+   
 }
