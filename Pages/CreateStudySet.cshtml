@@ -17,9 +17,9 @@
                     <p class="mb-0">Term: </p>
                     <button class="btn btn-danger fs-6 deleteCard" disabled><i class="bi bi-file-earmark-x"></i></button>
                 </div>
-                <input type="text" class="form-control mt-1 mb-2" id="Begriff">
+                <input type="text" class="form-control mt-1 mb-2" id="Begriff" name="StudySet.Cards[0].Term">
                 <p>Definition:</p>
-                <input type="text" class="form-control mt-1" id="Definition">
+                <input type="text" class="form-control mt-1" id="Definition" name="StudySet.Cards[0].Definition">
             </div>
         </li>
     </ul>
@@ -38,7 +38,6 @@
             let newCard = card.clone();
             let adjust = (c) => {
                 let replaceIndex = (i, c) => c.replace("0", counter);
-                c.attr("id", replaceIndex);
                 c.attr("name", replaceIndex);
                 c.val("");
             }

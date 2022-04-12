@@ -30,6 +30,7 @@ builder.Services.AddDbContext<QuizletContext>(options =>
 });
 
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<UserService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

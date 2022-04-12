@@ -17,7 +17,7 @@ public class LoginModel : PageModel
     private readonly AuthService _authService;
 
     [BindProperty]
-    public Login Login { get; set; } = null!;
+    public DtoLogin DtoLogin { get; set; } = null!;
 
     public LoginModel(ILogger<ErrorModel> logger, QuizletContext quizletContext, AuthService authService)
     {
@@ -33,12 +33,12 @@ public class LoginModel : PageModel
             return Page();
         }
         
-        var user = _quizletContext.Users.FirstOrDefault(x => x.Username == Login.Username);
+        var user = _quizletContext.Users.FirstOrDefault(x => x.Username == DtoLogin.Username);
 
         if (user == null)
             return Page();
 
-        if (!_authService.VerifyPasswordHash(Login.Password, user.PasswordHash, user.PasswordSalt))
+        if (!_authService.VerifyPasswordHash(DtoLogin.Password, user.PasswordHash, user.PasswordSalt))
             return Page();
         
         Response.Cookies.Append("X-Access-Token", _authService.CreateToken(user), new CookieOptions
