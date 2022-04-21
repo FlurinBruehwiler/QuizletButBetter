@@ -24,5 +24,6 @@ public class StudySetModel : PageModel
     public void OnGet(int id)
     {
         StudySet = _quizletContext.StudySets.Include(x => x.Cards).First(x => x.StudySetId == id);
+        Console.WriteLine(StudySet.StudySetId);
     }
 }

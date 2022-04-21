@@ -24,5 +24,5 @@ public class Learn
     public int StudySetId { get; set; }
     
    
-    public List<LearnCard>? LearnCards { get; set; }
+    public List<LearnCard> LearnCards { get; set; }
 }
