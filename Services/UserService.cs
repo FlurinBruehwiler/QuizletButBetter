@@ -13,9 +13,12 @@ public class UserService
         _quizletContext = quizletContext;
     }
     
-    public int GetId(HttpRequest httpRequest)
+    public int GetUserId(HttpRequest httpRequest)
     {
         var jwt = httpRequest.Cookies["X-Access-Token"];
+
+        if (String.IsNullOrEmpty(jwt))
+            return -1;
         
         var handler = new JwtSecurityTokenHandler();
         var jsonToken = handler.ReadToken(jwt);
@@ -32,7 +35,7 @@ public class UserService
 
     public User? GetUser(HttpRequest httpRequest)
     {
-        var id = GetId(httpRequest);
+        var id = GetUserId(httpRequest);
         return _quizletContext.Users.Find(id);
     }
 }

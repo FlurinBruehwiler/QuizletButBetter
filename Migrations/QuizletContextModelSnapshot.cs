@@ -82,11 +82,15 @@ namespace M133.Migrations
                     b.Property<int>("CardId")
                         .HasColumnType("int");
 
+                    b.Property<int>("LastCardIndex")
+                        .HasColumnType("int");
+
                     b.Property<int>("LearnId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PoolId")
-                        .HasColumnType("int");
+                    b.Property<string>("Pool")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RepeatedFalse")
                         .HasColumnType("int");
@@ -97,26 +101,7 @@ namespace M133.Migrations
 
                     b.HasIndex("LearnId");
 
-                    b.HasIndex("PoolId");
-
                     b.ToTable("LearnCards");
-                });
-
-            modelBuilder.Entity("M133.Models.Pool", b =>
-                {
-                    b.Property<int>("PoolId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PoolId"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("PoolId");
-
-                    b.ToTable("Pools");
                 });
 
             modelBuilder.Entity("M133.Models.StudySet", b =>
@@ -211,17 +196,9 @@ namespace M133.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("M133.Models.Pool", "Pool")
-                        .WithMany("LearnCards")
-                        .HasForeignKey("PoolId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Card");
 
                     b.Navigation("Learn");
-
-                    b.Navigation("Pool");
                 });
 
             modelBuilder.Entity("M133.Models.StudySet", b =>
@@ -241,11 +218,6 @@ namespace M133.Migrations
                 });
 
             modelBuilder.Entity("M133.Models.Learn", b =>
-                {
-                    b.Navigation("LearnCards");
-                });
-
-            modelBuilder.Entity("M133.Models.Pool", b =>
                 {
                     b.Navigation("LearnCards");
                 });

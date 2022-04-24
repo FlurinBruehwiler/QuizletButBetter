@@ -10,19 +10,6 @@ namespace M133.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Pools",
-                columns: table => new
-                {
-                    PoolId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Pools", x => x.PoolId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -112,8 +99,9 @@ namespace M133.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LearnId = table.Column<int>(type: "int", nullable: false),
                     CardId = table.Column<int>(type: "int", nullable: false),
-                    PoolId = table.Column<int>(type: "int", nullable: false),
-                    RepeatedFalse = table.Column<int>(type: "int", nullable: false)
+                    Pool = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RepeatedFalse = table.Column<int>(type: "int", nullable: false),
+                    LastCardIndex = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -129,12 +117,6 @@ namespace M133.Migrations
                         column: x => x.LearnId,
                         principalTable: "Learns",
                         principalColumn: "LearnId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_LearnCards_Pools_PoolId",
-                        column: x => x.PoolId,
-                        principalTable: "Pools",
-                        principalColumn: "PoolId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -152,11 +134,6 @@ namespace M133.Migrations
                 name: "IX_LearnCards_LearnId",
                 table: "LearnCards",
                 column: "LearnId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LearnCards_PoolId",
-                table: "LearnCards",
-                column: "PoolId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Learns_StudySetId",
@@ -184,9 +161,6 @@ namespace M133.Migrations
 
             migrationBuilder.DropTable(
                 name: "Learns");
-
-            migrationBuilder.DropTable(
-                name: "Pools");
 
             migrationBuilder.DropTable(
                 name: "StudySets");

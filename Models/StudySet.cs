@@ -25,8 +25,4 @@ public class StudySet
     public List<Learn>? Learns { get; set; }
 
     public List<Card> Cards { get; set; } = new();
-
-    public List<Card> Cards { get; set; }
-
-
 }

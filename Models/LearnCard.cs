@@ -25,8 +25,9 @@ public class LearnCard
     public Card Card { get; set; } = null!;
     public int CardId { get; set; }
     
-    public Pool Pool { get; set; } = null!;
-    public int PoolId { get; set; }
+    public Pool Pool { get; set; }
     
     public int RepeatedFalse { get; set; }
+
+    public int LastCardIndex { get; set; }
 }
