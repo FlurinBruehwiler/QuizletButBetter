@@ -7,7 +7,7 @@
 
 <button type="button" class="btn btn-primary newStudySetButton">new Study Set</button>
 
-<div class="list-group mt-5">
+<div class="list-group mt-3">
     @foreach (var studySet in Model.StudySets)
     {
         <a href="/StudySet/@studySet.StudySetId" class="list-group-item list-group-item-action">@studySet.Name</a>

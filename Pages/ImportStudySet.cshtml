@@ -3,12 +3,12 @@
 @{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>Import a Learnset</h1>
+<h1>Import a Study Set</h1>
 
 <form method="post">
     Name:
     <input asp-for="Title" class="form-control mt-1"/>
-    <th scope="col">Import</th>
+   
     <label for="exampleFormControlTextarea1">Import your Study Set here:</label>
     <textarea asp-for="TextArea" class="form-control" id="inputtext" rows="3"></textarea>
     <input type="submit" class="btn btn-primary mt-2" value="Create Learnset"/>
