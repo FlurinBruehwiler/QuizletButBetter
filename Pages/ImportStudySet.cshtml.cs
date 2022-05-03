@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using M133.Models;
-using M133.Models.DTO;
+﻿using M133.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -12,41 +10,36 @@ public class ImportStudySetModel : PageModel
 {
     private readonly QuizletContext _quizletContext;
 
-    [BindProperty]
-    public string Title { get; set; } = null!;
-
-    [BindProperty]
-    public string TextArea { get; set; } = null!;
-
-    public StudySet? ImportStudySet()
-    { 
-        var sep = "\t";
-        var studySet = new StudySet(Title, _quizletContext.Users.First());
-        var listStrLineElements = TextArea.Split(Environment.NewLine).ToList();
-        foreach(var l in listStrLineElements)
-        {
-            var termandDefinition = l.Split(sep).ToList();
-            if (termandDefinition.Count != 2)
-            {
-                continue;
-            }
-            Card card = new Card(termandDefinition[0], termandDefinition[1]);
-            studySet.Cards.Add(card);
-        }
-       
-        return studySet;
-    }  
-    
     public ImportStudySetModel(QuizletContext quizletContext)
     {
         _quizletContext = quizletContext;
+    }
+
+    [BindProperty] public string Title { get; set; } = null!;
+
+    [BindProperty] public string TextArea { get; set; } = null!;
+
+    public StudySet? ImportStudySet()
+    {
+        var sep = "\t";
+        var studySet = new StudySet(Title, _quizletContext.Users.First());
+        var listStrLineElements = TextArea.Split(Environment.NewLine).ToList();
+        foreach (var l in listStrLineElements)
+        {
+            var termandDefinition = l.Split(sep).ToList();
+            if (termandDefinition.Count != 2) continue;
+            var card = new Card(termandDefinition[0], termandDefinition[1]);
+            studySet.Cards.Add(card);
+        }
+
+        return studySet;
     }
 
     public IActionResult OnGet()
     {
         return Page();
     }
-    
+
     public IActionResult OnPostAsync()
     {
         var studySet = ImportStudySet();
@@ -56,6 +49,4 @@ public class ImportStudySetModel : PageModel
         _quizletContext.SaveChanges();
         return RedirectToPage("./Index");
     }
-
-   
 }

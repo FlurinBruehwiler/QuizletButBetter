@@ -6,33 +6,47 @@
 <h1>Import a Learnset</h1>
 
 <form method="post">
-    <table class="table mt-2">
-        <thead>
-         Name:
-            <input asp-for="Title" class="form-control mt-1"/>
-        <tr>
-            <th scope="col">Import</th>
-            <th scope="col">Preview</th>
-        </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td class="w-[50%]">
-                    <div >
-                        <label for="exampleFormControlTextarea1">Import your Study Set here:</label>
-                                            <textarea asp-for="TextArea" class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                    </div>
-                    
-                </td>
-                <td>
-                     <label for="exampleFormControlTextarea1">Preview:</label>
-                    <textarea asp-for="TextArea" class="form-control" id="exampleFormControlTextarea2" rows="4"></textarea>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
+    Name:
+    <input asp-for="Title" class="form-control mt-1"/>
+    <th scope="col">Import</th>
+    <label for="exampleFormControlTextarea1">Import your Study Set here:</label>
+    <textarea asp-for="TextArea" class="form-control" id="inputtext" rows="3"></textarea>
     <input type="submit" class="btn btn-primary mt-2" value="Create Learnset"/>
-    <input type="submit" class="btn btn-primary mt-2" value="Preview"/>
+    <button type="button" class="btn btn-primary mt-2" id="preview" value="Preview">Preview</button>
 </form>
 
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Term</th>
+        <th scope="col">Definition</th>
+    </tr>
+    </thead>
+    <tbody id="Cards">
+    
+    </tbody>
+</table>
+
+<script type="text/javascript">
+ let counter = 0;
+     $(document).ready(function () {
+         $("#preview").click(function () {
+             let input = $("#inputtext").val();
+             let sep = "\t";
+             let listStringElements = input.split(/\r?\n/);
+             for (let i = 0; i < listStringElements.length; i++){
+                 let termanddefinition = listStringElements[i].split(sep);
+                 if(termanddefinition.length !== 2){
+                     continue;
+                 } 
+                 $("#Cards").append(`<tr class="studyset mt-2">
+                                        <td class="mb-0">${termanddefinition[0]}</td>
+                                        <td>${termanddefinition[1]}</td>
+                                </tr>`)
+             }
+            
+             
+         });
+     });
+        
+</script>
