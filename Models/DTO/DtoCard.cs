@@ -8,6 +8,11 @@ public class DtoCard
         Definition = definition;
     }
 
+    public DtoCard()
+    {
+        
+    }
+    
     public string Term { get; set; }
     public string Definition { get; set; }
 }

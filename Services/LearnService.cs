@@ -21,7 +21,7 @@ public class LearnService
         var currentCard = GetActiveCardsSorted().First();
 
         if (previousResult == null)
-            return new DtoLearnCard(currentCard); 
+            return new DtoLearnCard(currentCard, GetMultipleChoiceChoices(currentCard)); 
 
         MoveCard(currentCard, (bool) previousResult );
 
@@ -36,11 +36,28 @@ public class LearnService
         }
         else
         {
-            result = new DtoLearnCard(nextCard);
+            result = new DtoLearnCard(nextCard, GetMultipleChoiceChoices(nextCard));
         }
 
         _quizletContext.SaveChanges();
         return result; 
+    }
+
+    private string[] GetMultipleChoiceChoices(LearnCard cardNotToInclude)
+    {
+        List<string> output = new();
+        while (output.Count < 3 && output.Count < _learn.LearnCards.Count - 1)
+        {   
+            Random r = new();
+            var potentialCard = _learn.LearnCards[r.Next(0, _learn.LearnCards.Count)];
+            if(potentialCard == cardNotToInclude)
+                continue;
+            if(output.Contains(potentialCard.Card.Definition))
+                continue;
+            output.Add(potentialCard.Card.Definition);
+        }
+
+        return output.ToArray();
     }
 
     private List<LearnCard> GetActiveCardsSorted()
