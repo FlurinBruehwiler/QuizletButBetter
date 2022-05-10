@@ -3,3 +3,21 @@
 @{
     ViewData["Title"] = "Privacy Policy";
 }
+
+
+<script type="text/javascript">
+      $.ajax({
+          url:`/api/studySet/${@RouteData.Values["id"]}/nextCard`,
+          type:"POST",
+          data:`{"PreviousResult": null}`,
+          contentType:"application/json",
+          dataType:"json",
+          success: function(){
+            alert("success");
+          }
+    })
+   
+    $(document).ready(function () {
+        
+    });
+</script>

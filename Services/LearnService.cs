@@ -1,4 +1,5 @@
 using M133.Models;
+using M133.Models.DTO;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -7,26 +8,39 @@ namespace M133.Services;
 public class LearnService
 {
     private readonly QuizletContext _quizletContext;
-    private readonly Learn _learn;
+    private Learn _learn = null!;
 
     public LearnService(QuizletContext quizletContext, UserService userService, int studySetId, HttpRequest httpRequest)
     {
         _quizletContext = quizletContext;
-        _learn = GetLearn(studySetId, userService.GetUserId(httpRequest)) ?? throw new Exception();
+        GetLearn(studySetId, userService.GetUserId(httpRequest));
     }
     
-    public string NextCard(bool? previousResult)
+    public DtoLearnCard NextCard(bool? previousResult)
     {
         var currentCard = GetActiveCardsSorted().First();
 
         if (previousResult == null)
-            return JsonConvert.SerializeObject(currentCard);
+            return new DtoLearnCard(currentCard); 
 
         MoveCard(currentCard, (bool) previousResult );
 
-        var nextCard = GetActiveCardsSorted().Last();
+        var nextCard = GetActiveCardsSorted().FirstOrDefault();
+
+        DtoLearnCard result;
         
-        return JsonConvert.SerializeObject(nextCard);
+        if (nextCard == null)
+        {
+            _quizletContext.Remove(_learn);
+            result = new DtoLearnCard();
+        }
+        else
+        {
+            result = new DtoLearnCard(nextCard);
+        }
+
+        _quizletContext.SaveChanges();
+        return result; 
     }
 
     private List<LearnCard> GetActiveCardsSorted()
@@ -38,6 +52,8 @@ public class LearnService
     private void MakeNewCardActive()
     {
         var potentialCards = GetCardsWithPool(Pool.NochNie);
+        if (potentialCards.Count == 0)
+            return;
         Random rnd = new Random();
         var newCard = potentialCards[rnd.Next(potentialCards.Count)];
         newCard.Pool = Pool.MultipleChoice;
@@ -67,7 +83,7 @@ public class LearnService
                 card.RepeatedFalse += result ? 0 : 1;
                 break;
             case Pool.SchriftlichFalse:
-                poolToMovie = result ? Pool.Finished : Pool.Schriftlich;
+                poolToMovie = result ? Pool.Schriftlich : Pool.SchriftlichFalse;
                 card.RepeatedFalse += result ? 0 : 1;
                 break;
         }
@@ -91,11 +107,21 @@ public class LearnService
             MakeNewCardActive();
     }
 
-    private Learn? GetLearn(int studySetId, int userId) => _quizletContext.Learns.Where(x => x.UserId == userId && x.StudySetId == studySetId)
+    private void GetLearn(int studySetId, int userId)
+    {
+        var learn = _quizletContext.Learns.Where(x => x.UserId == userId && x.StudySetId == studySetId)
             .Include(x => x.LearnCards)
             .ThenInclude(x => x.Card)
-            .Include(x => x.LearnCards)
-            .ThenInclude(x => x.Pool).FirstOrDefault() ?? CreateLearn(userId, studySetId);
+            .FirstOrDefault();
+
+        if (learn == null)
+        {
+            CreateLearn(userId, studySetId);
+            return;
+        }
+
+        _learn = learn;
+    } 
 
 
     private List<LearnCard> GetCardsWithPool(params Pool[] pools)
@@ -103,28 +129,33 @@ public class LearnService
         return _learn.LearnCards.Where(x => pools.Contains(x.Pool)).ToList();
     }
 
-    private Learn? CreateLearn(int userId, int studySetId)
+    private void CreateLearn(int userId, int studySetId)
     {
         var studySet = _quizletContext.StudySets.Where(x => x.StudySetId == studySetId)
             .Include(x => x.Cards).FirstOrDefault();
-
-        if (studySet == null)
-            return null;
         
-        var learn = new Learn
+        _learn = new Learn
         {
             UserId = userId,
             StudySetId = studySetId,
-            LearnCards = studySet.Cards.Select(x => new LearnCard
-            {
-                Card = x,
-                Pool = Pool.NochNie
-            }).ToList()
+            LearnCards = new()
         };
-
+        
+        if(studySet == null)
+            return;
+        
+        foreach (var card in studySet.Cards)
+        {
+            _learn.LearnCards.Add(new LearnCard
+            {
+                Card = card,
+                Pool = Pool.NochNie
+            });
+        }
+        
         for (int i = 0; i < 10; i++)
             MakeNewCardActive();
 
-        return learn;
+        _quizletContext.Learns.Add(_learn);
     }
 }

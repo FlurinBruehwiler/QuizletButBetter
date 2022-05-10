@@ -15,10 +15,12 @@ public class UserService
     
     public int GetUserId(HttpRequest httpRequest)
     {
+        return 1;
+        
         var jwt = httpRequest.Cookies["X-Access-Token"];
 
-        if (String.IsNullOrEmpty(jwt))
-            return -1;
+        if (string.IsNullOrEmpty(jwt))
+            throw new Exception();
         
         var handler = new JwtSecurityTokenHandler();
         var jsonToken = handler.ReadToken(jwt);
@@ -30,7 +32,7 @@ public class UserService
             return id;
         }
 
-        return -1;
+        throw new Exception();
     }
 
     public User? GetUser(HttpRequest httpRequest)

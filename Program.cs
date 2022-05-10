@@ -81,7 +81,6 @@ app.MapRazorPages();
 app.MapPost("/api/studySet/{id}/nextCard",  (int id, NextCardBody nextCardBody, HttpRequest httpRequest, QuizletContext quizletContext, UserService userService) =>
 {
     var learnService = new LearnService(quizletContext, userService, id, httpRequest);
-    
     return Results.Ok(learnService.NextCard(nextCardBody.PreviousResult));
 });
 
